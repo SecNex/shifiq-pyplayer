@@ -41,6 +41,8 @@ if __name__ == "__main__":
 
 ## License
 
+This project is licensed under the GNU General Public License v3.0. See the [LICENSE](LICENSE) file for details.
+
 ## Contributing
 
 We welcome contributions to improve the player. Please open an issue or submit a pull request.
