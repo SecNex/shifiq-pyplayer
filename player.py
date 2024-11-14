@@ -30,13 +30,13 @@ class ShifIQKioskBrowser(QMainWindow):
     def __init__(self, url: str, browser=None) -> None:
         super().__init__()
         
-        # Initialisiere pyautogui
+        # Initialize pyautogui
         pyautogui.FAILSAFE = False
         
-        # Erstelle einen Timer für globales Maus-Tracking
+        # Create a timer for global mouse tracking
         self.mouse_track_timer = QTimer(self)
         self.mouse_track_timer.timeout.connect(self.check_mouse_position)
-        self.mouse_track_timer.start(100)  # Prüfe alle 100ms
+        self.mouse_track_timer.start(100)  # Check every 100ms
         
         self.last_mouse_pos = pyautogui.position()
         
@@ -102,12 +102,12 @@ class ShifIQKioskBrowser(QMainWindow):
 
         self.last_mouse_move_time = 0
 
-        self.warning_shown = False  # Flag für die Warnung
-        self.warning_time = 300  # 5 Minuten in Sekunden
-        self.reset_time = 600    # 10 Minuten in Sekunden
+        self.warning_shown = False  # Flag for the warning
+        self.warning_time = 300  # 5 minutes in seconds
+        self.reset_time = 600    # 10 minutes in seconds
 
     def eventFilter(self, watched_object, event):
-        # Überprüfe Events im Browser
+        # Check events in the browser
         if watched_object == self.browser:
             if event.type() in [
                 event.Type.MouseMove,
@@ -147,23 +147,23 @@ class ShifIQKioskBrowser(QMainWindow):
     def report_inactivity(self):
         self.last_mouse_move_time += 1
         
-        # Nach 5 Minuten: Zeige Warnung
+        # After 5 minutes: Show warning
         if self.last_mouse_move_time >= self.warning_time and not self.warning_shown:
             self.show_warning_message()
             self.warning_shown = True
             
-        # Nach 10 Minuten: Zurück zur Startseite
+        # After 10 minutes: Reset to main page
         if self.last_mouse_move_time >= self.reset_time:
             self.reset_url()
 
     def show_warning_message(self):
         msg = QMessageBox(self)
         msg.setIcon(QMessageBox.Warning)
-        msg.setWindowTitle("Inaktivitätswarnung")
-        msg.setText("Sie waren längere Zeit inaktiv!")
-        msg.setInformativeText("In 5 Minuten kehren Sie automatisch zur Startseite zurück.")
+        msg.setWindowTitle("Inactivity warning")
+        msg.setText("You were inactive for a longer time!")
+        msg.setInformativeText("In 5 minutes you will be automatically redirected to the main page.")
         msg.setStandardButtons(QMessageBox.Ok)
-        msg.setWindowFlags(Qt.WindowStaysOnTopHint)  # Fenster bleibt im Vordergrund
+        msg.setWindowFlags(Qt.WindowStaysOnTopHint)  # Window stays on top
         msg.exec()
 
     def reset_inactivity_timer(self):
@@ -191,7 +191,6 @@ class ShifIQKioskBrowser(QMainWindow):
     def check_mouse_position(self):
         current_pos = pyautogui.position()
         if current_pos != self.last_mouse_pos:
-            print("Mouse moved!")
             self.reset_inactivity_timer()
             self.last_mouse_pos = current_pos
 
